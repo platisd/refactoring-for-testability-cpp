@@ -8,7 +8,7 @@ add_executable(TimeBefore src/TimeBefore.cpp)
 target_link_libraries(TimeBefore PRIVATE
         myinterruptmanager
         mypinmanager
-        powercontrollerBefore)
+        powercontroller)
 
 add_library(singletaskasynchronoustimer src/SingleTaskAsynchronousTimer.cpp)
 target_link_libraries(singletaskasynchronoustimer PRIVATE pthread)
