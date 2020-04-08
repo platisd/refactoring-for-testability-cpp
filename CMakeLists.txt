@@ -26,10 +26,10 @@ add_compile_options(
         -Werror
 )
 
-add_subdirectory(time)
-add_subdirectory(hardcoded_dependencies)
-add_subdirectory(third_party)
-add_subdirectory(files)
-add_subdirectory(new_operators)
-add_subdirectory(law_of_demeter)
-add_subdirectory(domain_dependent_on_application)
+add_subdirectory(030-time)
+add_subdirectory(050-hardcoded_dependencies)
+add_subdirectory(020-third_party)
+add_subdirectory(010-files)
+add_subdirectory(040-new_operators)
+add_subdirectory(060-law_of_demeter)
+add_subdirectory(070-domain_dependent_on_application)
