@@ -1,0 +1,3 @@
+add_executable(HardcodedDependenciesBefore src/HardcodedDependenciesBefore.cpp)
+
+add_executable(HardcodedDependenciesAfter src/HardcodedDependenciesAfter.cpp)
