@@ -27,7 +27,7 @@ add_compile_options(
 )
 
 add_subdirectory(030-time)
-add_subdirectory(050-hardcoded_dependencies)
+add_subdirectory(009-hardcoded_dependencies)
 add_subdirectory(020-third_party)
 add_subdirectory(010-files)
 add_subdirectory(040-new_operators)
