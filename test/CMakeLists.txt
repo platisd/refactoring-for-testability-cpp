@@ -81,3 +81,10 @@ configure_test(platissolutionsbenchmarker_test)
 find_package(CURL REQUIRED)
 target_link_libraries(platissolutionsbenchmarker_test PRIVATE ${CURL_LIBRARIES})
 
+# PowerController test
+add_executable(powercontroller_test
+        ${time_dir}/src/PowerController.cpp
+        ${unit_tests}/PowerController_test.cpp)
+target_include_directories(powercontroller_test PUBLIC
+        ${time_dir}/include)
+configure_test(powercontroller_test)
