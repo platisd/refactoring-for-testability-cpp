@@ -47,7 +47,7 @@ function(configure_test testExecutable)
     # Include mock directory
     target_include_directories(${testExecutable} PRIVATE ${mocks})
     # Link against gtest library
-    target_link_libraries(${testExecutable} gtest gtest_main gmock_main)
+    target_link_libraries(${testExecutable} PRIVATE gtest gtest_main gmock_main)
     # Add gcov style coverage
     target_compile_options(${testExecutable} PUBLIC -O0 --coverage)
     target_link_options(${testExecutable} PUBLIC --coverage)
@@ -59,8 +59,25 @@ endfunction(configure_test)
 
 # FileEncoder test
 add_executable(fileencoder_test
-        ${files_dir}/src/FileEncoder
+        ${files_dir}/src/FileEncoder.cpp
         ${unit_tests}/FileEncoder_test.cpp)
 target_include_directories(fileencoder_test PUBLIC
         ${files_dir}/include)
 configure_test(fileencoder_test)
+
+# PlatisSolutionsBenchmarker test
+add_executable(platissolutionsbenchmarker_test
+        ${third_party_dir}/src/PlatisSolutionsBenchmarker.cpp
+        ${unit_tests}/PlatisSolutionsBenchmarker_test.cpp)
+target_include_directories(platissolutionsbenchmarker_test PUBLIC
+        ${third_party_dir}/include)
+configure_test(platissolutionsbenchmarker_test)
+# We should not pull third party libraries (e.g. curl) in our tests
+# but since in this case, for the sake of the example, we have
+# the `before` and `after` namespaces in the same file, we need
+# to get both compiled. Both the "good" and the "bad" way.
+# In fact, pulling third party libraries, which are supposed to
+# be abstracted out in the tests, is a sign you do things wrong.
+find_package(CURL REQUIRED)
+target_link_libraries(platissolutionsbenchmarker_test PRIVATE ${CURL_LIBRARIES})
+
