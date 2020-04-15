@@ -5,7 +5,7 @@
 
 struct MyTimeKeeper : public TimeKeeper
 {
-    void sleep_for(std::chrono::milliseconds delay) const override;
+    void sleepFor(std::chrono::milliseconds delay) const override;
 };
 
 #endif // CPP_REFACTORING_WEBINAR_MYTIMEKEEPER_HPP

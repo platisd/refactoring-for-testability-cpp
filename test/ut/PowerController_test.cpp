@@ -66,7 +66,7 @@ TEST_F(PowerControllerTest, turnOn_WhenCalled_WillSendPulse)
         // to check if it is there correct pin and pulse duration that is used
         InSequence pulseSequence;
         EXPECT_CALL(mPinManager, setPin(_));
-        EXPECT_CALL(mTimeKeeper, sleep_for(_));
+        EXPECT_CALL(mTimeKeeper, sleepFor(_));
         EXPECT_CALL(mPinManager, clearPin(_));
     }
     // To avoid getting blocked forever, let's induce a timeout by invoking the

@@ -7,7 +7,7 @@ struct TimeKeeper
 {
     virtual ~TimeKeeper() = default;
 
-    virtual void sleep_for(std::chrono::milliseconds delay) const = 0;
+    virtual void sleepFor(std::chrono::milliseconds delay) const = 0;
 };
 
 #endif // CPP_REFACTORING_WEBINAR_TIMEKEEPER_HPP

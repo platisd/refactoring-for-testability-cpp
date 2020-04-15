@@ -8,7 +8,7 @@ class MockTimeKeeper : public TimeKeeper
 {
 public:
     MOCK_METHOD(void,
-                sleep_for,
+                sleepFor,
                 (std::chrono::milliseconds delay),
                 (const, override));
 };

@@ -63,7 +63,7 @@ PowerController::PowerController(PinManager& pinManager,
 bool PowerController::turnOn()
 {
     mPinManager.setPin(kPin);
-    mTimeKeeper.sleep_for(kTimeBetweenPulses);
+    mTimeKeeper.sleepFor(kTimeBetweenPulses);
     mPinManager.clearPin(kPin);
 
     std::unique_lock<std::mutex> lk(mRunnerMutex);
