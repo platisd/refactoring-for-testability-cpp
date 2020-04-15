@@ -1,4 +1,5 @@
 include_directories(include)
+set(law_of_demeter_dir ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
 add_library(asioserialportclient src/AsioSerialPortClient.cpp)
 add_library(mycommunicationmanager src/MyCommunicationManager.cpp)

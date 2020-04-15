@@ -1,4 +1,5 @@
 include_directories(include)
+set(new_operators_dir ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
 add_library(infraredsensor src/InfraredSensor.cpp)
 add_library(ultrasonicsensor src/UltrasonicSensor.cpp)

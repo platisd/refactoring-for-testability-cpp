@@ -1,4 +1,5 @@
 include_directories(include)
+set(time_dir ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
 add_library(myinterruptmanager src/MyInterruptManager.cpp)
 add_library(mypinmanager src/MyPinManager.cpp)

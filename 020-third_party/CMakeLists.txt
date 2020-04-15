@@ -1,4 +1,5 @@
 include_directories(include)
+set(third_party_dir ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
 find_package(CURL REQUIRED)
 add_library(curldownloader src/CurlDownloader.cpp)

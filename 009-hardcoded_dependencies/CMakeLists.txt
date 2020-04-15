@@ -1,4 +1,5 @@
 include_directories(include)
+set(hardcoded_dependencies_dir ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
 add_library(mypinreader src/MyPinReader.cpp)
 add_library(myinterruptservicemanager src/MyInterruptServiceManager.cpp)
