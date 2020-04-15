@@ -88,3 +88,22 @@ add_executable(powercontroller_test
 target_include_directories(powercontroller_test PUBLIC
         ${time_dir}/include)
 configure_test(powercontroller_test)
+
+# SensorManager test
+add_executable(sensormanager_test
+        ${new_operators_dir}/src/SensorManager.cpp
+        ${unit_tests}/SensorManager_test.cpp)
+target_include_directories(sensormanager_test PUBLIC
+        ${new_operators_dir}/include)
+configure_test(sensormanager_test)
+# You should normally not be pulling in untestable resources such as
+# the concrete sensor classes that are supposed to be abstracted out
+# and are irrelevant to the unit under test. Here we have to link
+# towards them since, for the sake of the example, they are used by
+# the SensorManager version *before* the refactoring which lies in the
+# same file as the new version. In fact, having to link with irrelevant
+# resources is a strong indicator that there  is a problem.
+target_link_libraries(sensormanager_test PRIVATE
+        infraredsensor
+        ultrasonicsensor
+        lasersensor)
