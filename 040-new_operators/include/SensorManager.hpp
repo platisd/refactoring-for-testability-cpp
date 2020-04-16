@@ -1,5 +1,5 @@
-#ifndef CPP_REFACTORING_WEBINAR_SENSORMANAGER_HPP
-#define CPP_REFACTORING_WEBINAR_SENSORMANAGER_HPP
+#ifndef CPP_REFACTORING_FOR_TESTABILITY_SENSORMANAGER_HPP
+#define CPP_REFACTORING_FOR_TESTABILITY_SENSORMANAGER_HPP
 
 #include "InfraredSensor.hpp" // Remove this after refactoring
 #include "LaserSensor.hpp"    // Remove this after refactoring
@@ -33,4 +33,4 @@ private:
 };
 } // namespace after
 
-#endif // CPP_REFACTORING_WEBINAR_SENSORMANAGER_HPP
+#endif // CPP_REFACTORING_FOR_TESTABILITY_SENSORMANAGER_HPP
