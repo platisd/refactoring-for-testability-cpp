@@ -102,8 +102,16 @@ configure_test(sensormanager_test)
 # towards them since, for the sake of the example, they are used by
 # the SensorManager version *before* the refactoring which lies in the
 # same file as the new version. In fact, having to link with irrelevant
-# resources is a strong indicator that there  is a problem.
+# resources is a strong indicator that there is a problem.
 target_link_libraries(sensormanager_test PRIVATE
         infraredsensor
         ultrasonicsensor
         lasersensor)
+
+# StateBroadcaster test
+add_executable(statebroadcaster_test
+        ${law_of_demeter_dir}/src/StateBroadcaster.cpp
+        ${unit_tests}/StateBroadcaster_test.cpp)
+target_include_directories(statebroadcaster_test PUBLIC
+        ${law_of_demeter_dir}/include)
+configure_test(statebroadcaster_test)
