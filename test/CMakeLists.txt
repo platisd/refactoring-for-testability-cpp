@@ -115,3 +115,17 @@ add_executable(statebroadcaster_test
 target_include_directories(statebroadcaster_test PUBLIC
         ${law_of_demeter_dir}/include)
 configure_test(statebroadcaster_test)
+
+# CommunicationManager test
+add_executable(communicationmanager_test
+        ${domain_dependent_on_application_dir}/src/CommunicationManager.cpp
+        ${unit_tests}/CommunicationManager_test.cpp)
+target_include_directories(communicationmanager_test PUBLIC
+        ${domain_dependent_on_application_dir}/include)
+configure_test(communicationmanager_test)
+# You normally should not include specific project details in your test
+# fixtures or have general/domain logic dependent on specific/application
+# logic. In our case, for the sake of the example, we have `before` and
+# `after` namespaces in the same file and therefore need to make sure
+# everything compiles. This should typically be considered a smell.
+target_compile_definitions(communicationmanager_test PRIVATE BAR_PRODUCT)
