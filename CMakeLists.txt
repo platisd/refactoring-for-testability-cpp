@@ -26,9 +26,9 @@ add_compile_options(
         -Werror
 )
 
-add_subdirectory(030-time)
-add_subdirectory(009-hardcoded_dependencies)
-add_subdirectory(020-third_party)
+add_subdirectory(050-time)
+add_subdirectory(020-hardcoded_dependencies)
+add_subdirectory(030-third_party)
 add_subdirectory(010-files)
 add_subdirectory(040-new_operators)
 add_subdirectory(060-law_of_demeter)
