@@ -1,0 +1,30 @@
+name: Examples CI
+
+on: [push]
+
+jobs:
+
+  build-examples:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        gcc-version: [9]
+    env:
+      CC: gcc-${{matrix.gcc-version}}
+      CXX:  g++-${{matrix.gcc-version}}
+      build_dir: build
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get dependencies
+        run: |
+          sudo apt-get install -y g++-${{ matrix.gcc-version }}
+          sudo apt-get install -y libcurl4-openssl-dev
+      - name: Create examples build directory
+        run: mkdir -p ${build_dir}
+      - name: Configure examples
+        run: cd ${build_dir} && cmake ..
+      - name: Build examples
+        run: cmake --build ${build_dir} -- -j$(nproc)
+      - name: Run unit tests
+        run: cd ${build_dir}/test && ctest
