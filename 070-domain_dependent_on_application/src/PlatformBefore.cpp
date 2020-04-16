@@ -1,13 +1,12 @@
 #include "AsioSerialPortClient.hpp"
-#include "MyCommunicationManager.hpp"
+#include "CommunicationManager.hpp"
 
 using namespace before;
 
 int main()
 {
-
     AsioSerialPortClient serialPortClient;
-    MyCommunicationManager communicationManager{serialPortClient};
+    CommunicationManager communicationManager{serialPortClient};
     communicationManager.sendViaSerial("First message");
     communicationManager.sendViaSerial("Second message");
 

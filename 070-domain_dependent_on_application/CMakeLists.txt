@@ -2,7 +2,7 @@ include_directories(include)
 set(domain_dependent_on_application_dir ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
 add_library(asioserialportclient2 src/AsioSerialPortClient.cpp)
-add_library(mycommunicationmanager2 src/MyCommunicationManager.cpp)
+add_library(mycommunicationmanager2 src/CommunicationManager.cpp)
 target_compile_definitions(mycommunicationmanager2 PRIVATE BAR_PRODUCT)
 
 add_executable(PlatformBefore src/PlatformBefore.cpp)

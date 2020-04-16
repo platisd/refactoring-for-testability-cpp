@@ -1,14 +1,36 @@
 #ifndef CPP_REFACTORING_WEBINAR_COMMUNICATIONMANAGER_HPP
 #define CPP_REFACTORING_WEBINAR_COMMUNICATIONMANAGER_HPP
 
-#include "SerialPortClient.hpp" // Remove after refactoring
-#include <string>
+#include "SerialFormatter.hpp"
+#include "SerialPortClient.hpp"
 
+namespace before
+{
 struct CommunicationManager
 {
-    virtual ~CommunicationManager() = default;
+    CommunicationManager(SerialPortClient& serialPortClient);
 
-    virtual void sendViaSerial(std::string message) = 0;
+    void sendViaSerial(std::string message);
+
+private:
+    SerialPortClient& mSerialPortClient;
+    int mSequenceNumber{0};
 };
+} // namespace before
 
+namespace after
+{
+struct CommunicationManager
+{
+    CommunicationManager(SerialPortClient& serialPortClient,
+                         SerialFormatter& serialFormatter);
+
+    void sendViaSerial(std::string message);
+
+private:
+    SerialPortClient& mSerialPortClient;
+    SerialFormatter& mSerialFormatter;
+    int mSequenceNumber{0};
+};
+} // namespace after
 #endif // CPP_REFACTORING_WEBINAR_COMMUNICATIONMANAGER_HPP

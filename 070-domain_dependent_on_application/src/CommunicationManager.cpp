@@ -1,14 +1,13 @@
-#include "MyCommunicationManager.hpp"
+#include "CommunicationManager.hpp"
 
 namespace before
 {
-MyCommunicationManager::MyCommunicationManager(
-    SerialPortClient& serialPortClient)
+CommunicationManager::CommunicationManager(SerialPortClient& serialPortClient)
     : mSerialPortClient{serialPortClient}
 {
 }
 
-void MyCommunicationManager::sendViaSerial(std::string message)
+void CommunicationManager::sendViaSerial(std::string message)
 {
 #if defined(FOO_PRODUCT)
     mSerialPortClient.send(std::to_string(mSequenceNumber++) + ":" + message);
@@ -22,14 +21,14 @@ void MyCommunicationManager::sendViaSerial(std::string message)
 
 namespace after
 {
-MyCommunicationManager::MyCommunicationManager(
-    SerialPortClient& serialPortClient, SerialFormatter& serialFormatter)
+CommunicationManager::CommunicationManager(SerialPortClient& serialPortClient,
+                                           SerialFormatter& serialFormatter)
     : mSerialPortClient{serialPortClient}
     , mSerialFormatter{serialFormatter}
 {
 }
 
-void MyCommunicationManager::sendViaSerial(std::string message)
+void CommunicationManager::sendViaSerial(std::string message)
 {
     mSerialPortClient.send(mSerialFormatter.format(message));
 }
