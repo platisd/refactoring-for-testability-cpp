@@ -42,6 +42,7 @@ target_compile_options(gmock PRIVATE -Wno-pedantic)
 enable_testing()
 set(unit_tests ${CMAKE_CURRENT_SOURCE_DIR}/ut)
 set(mocks ${CMAKE_CURRENT_SOURCE_DIR}/mocks)
+set(gtest_run_flags --gtest_color=yes --gtest_repeat=5 --gtest_shuffle)
 
 function(configure_test testExecutable)
     # Include mock directory
@@ -54,7 +55,7 @@ function(configure_test testExecutable)
     # Create test name as the capitalized form of the test executable
     string(TOUPPER ${testExecutable} testName)
     # Add executable to test suite
-    add_test(${testName} ${testExecutable} ${GTEST_RUN_FLAGS})
+    add_test(${testName} ${testExecutable} ${gtest_run_flags})
 endfunction(configure_test)
 
 # FileEncoder test
