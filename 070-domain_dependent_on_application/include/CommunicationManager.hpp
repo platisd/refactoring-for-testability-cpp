@@ -14,7 +14,7 @@ struct CommunicationManager
 
 private:
     SerialPortClient& mSerialPortClient;
-    int mSequenceNumber{0};
+    [[maybe_unused]] int mSequenceNumber{0};
 };
 } // namespace before
 
@@ -30,7 +30,6 @@ struct CommunicationManager
 private:
     SerialPortClient& mSerialPortClient;
     SerialFormatter& mSerialFormatter;
-    int mSequenceNumber{0};
 };
 } // namespace after
 #endif // CPP_REFACTORING_FOR_TESTABILITY_COMMUNICATIONMANAGER_HPP

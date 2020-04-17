@@ -49,6 +49,8 @@ function(configure_test testExecutable)
     target_include_directories(${testExecutable} PRIVATE ${mocks})
     # Link against gtest library
     target_link_libraries(${testExecutable} PRIVATE gtest gtest_main gmock_main)
+    # Disable variadic macro warnings (can be a problem when compiling with Clang)
+    target_compile_options(${testExecutable} PRIVATE -Wno-gnu-zero-variadic-macro-arguments)
     # Add gcov style coverage
     target_compile_options(${testExecutable} PUBLIC -O0 --coverage)
     target_link_options(${testExecutable} PUBLIC --coverage)
