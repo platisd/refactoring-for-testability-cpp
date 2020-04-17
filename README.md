@@ -40,9 +40,11 @@ unrelated logic nor implement complex functionality just to be able to test.
 After all, unit testing should be fun and give you the confidence to develop
 without worrying you "broke" something.
 
-The three main reasons behind untestable or hard to test code are:
+The three main reasons behind untestable or hard to test code, in a
+not-so-random order are:
+
 1. Project management does not care about quality
-2. Developers do not know how to write testable code 
+2. Developers do not know how to write testable code
 3. Domain constraints on the design and technology
 
 The latter (3), is sometimes an excuse brought forward by developers from
@@ -79,3 +81,47 @@ in easy-to-test software:
   * [C.41](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c41-a-constructor-should-create-a-fully-initialized-object)
 * Abstract away code that cannot or should not be tested
   * E.g.: 3rd party libraries, time, file operations, other classes etc
+
+## Hard to test patterns
+
+The patterns or, if you may, *concepts*, are organized in directories named
+after their subject and are outlined below. These concepts are fundamentally
+difficult to test but please keep in mind this is not necessarily the only
+way to do so. Moreover, with the introduction of more feature-rich testing
+frameworks, dependency injection containers etc, there may be ways to get
+around the inherent lack of testability of these examples. That being said,
+it is good to know how to refactor them according to object oriented design
+best practices as well as the C++ Core guidelines. We illustrate this by relying
+only on [GoogleTest](https://github.com/google/googletest). GoogleTest, which
+includes mocking via GoogleMock is lightweight testing framework and probably
+the de facto standard for C++.
+
+The solutions proposed, do not claim to be better in performance or compliant
+with any safety critical coding guidelines your project may have. They tackle
+the lack of testability at a software design level and do not take into
+account special domain constraints. Nonetheless, if performance is brought
+forward as an argument against testable code, before taking any decisions
+please refer to the [3 rules of optimization](https://wiki.c2.com/?RulesOfOptimization).
+
+The code examples use `CMake` and need a compiler that supports C++17 or later.
+In most cases they include the code `before` and `after` the refactoring efforts
+in the same file under different *namespaces*. This is done for the sake of
+simplicity and has the side-effect of having including indications to code smells
+in the build configuration. These indications are typically followed by
+comments that point them out. What is perhaps most interesting is that the
+API does not change. Therefore, assuming you have well-throught APIs for your
+classes then you should be able to *contain* the refactoring changes.
+
+### Files
+
+### Hardcoded dependencies
+
+### Third party libraries
+
+### `new` operators
+
+### Time
+
+### Law of Demeter
+
+### Domain logic dependent on application logic
