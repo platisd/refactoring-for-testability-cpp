@@ -68,6 +68,25 @@ target_include_directories(fileencoder_test PUBLIC
         ${files_dir}/include)
 configure_test(fileencoder_test)
 
+# Odometers test
+# Let's include tests for both in the same file so to have all
+# examples from a specific thematic tested together
+add_executable(odometers_test
+        ${hardcoded_dependencies_dir}/src/DirectionlessOdometer.cpp
+        ${hardcoded_dependencies_dir}/src/DirectionalOdometer.cpp
+        ${unit_tests}/Odometers_test.cpp)
+target_include_directories(odometers_test PUBLIC
+        ${hardcoded_dependencies_dir}/include)
+configure_test(odometers_test)
+# You should not normally link to unrelated (and possibly untestable)
+# classes. However, in this case, since we the code before the
+# refactoring in the same file (for the sake of simplicity) we need
+# to link to those extra libraries to get everything to compile.
+# Typically, this would be an indication of bad design and code smells.
+target_link_libraries(odometers_test PRIVATE
+        myinterruptservicemanager
+        mypinreader)
+
 # PlatisSolutionsBenchmarker test
 add_executable(platissolutionsbenchmarker_test
         ${third_party_dir}/src/PlatisSolutionsBenchmarker.cpp
