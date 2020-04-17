@@ -2,6 +2,21 @@
 
 Hard-to-test patterns in C++ and how to refactor them.
 
+### Contents
+
+* [What](#what)
+* [Why](#why)
+* [How](#how)
+* [Hard-to-test patterns](#hard-to-test-patterns)
+  * [Files](#files)
+  * [Hardcoded dependencies](#hardcoded-dependencies)
+  * [Third-party libraries](#third-party-libraries)
+  * [`new` operators](#new-operators)
+  * [Time](#time)
+  * [Law of Demeter](#law-of-demeter)
+  * [Domain logic dependent on application logic](#domain-logic-dependent-on-application-logic)
+* [License](#license)
+
 ## What
 
 This repository includes examples of code that is *tricky* to unit test.
@@ -82,7 +97,7 @@ in easy-to-test software:
 * Abstract away code that cannot or should not be tested
   * E.g.: 3rd party libraries, time, file operations, other classes etc
 
-## Hard to test patterns
+## Hard-to-test patterns
 
 The patterns or, if you may, *concepts*, are organized in directories named
 after their subject and are outlined below. These concepts are fundamentally
@@ -786,3 +801,8 @@ void CommunicationManager::sendViaSerial(std::string message)
 | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | [CommunicationManager.hpp](070-domain_dependent_on_application/include/CommunicationManager.hpp) | [CommunicationManager_test.cpp](test/ut/CommunicationManager_test.cpp) |
 | [CommunicationManager.cpp](070-domain_dependent_on_application/src/CommunicationManager.cpp)     |                                                                        |
+
+## License
+
+* Code is licensed under [MIT license](LICENSE)
+* Markdown files are licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
