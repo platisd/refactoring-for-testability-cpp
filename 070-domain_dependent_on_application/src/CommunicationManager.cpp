@@ -10,7 +10,8 @@ CommunicationManager::CommunicationManager(SerialPortClient& serialPortClient)
 void CommunicationManager::sendViaSerial(std::string message)
 {
 #if defined(FOO_PRODUCT)
-    mSerialPortClient.send(std::to_string(mSequenceNumber++) + ":" + message);
+    static int sequenceNumber = 0;
+    mSerialPortClient.send(std::to_string(sequenceNumber++) + ":" + message);
 #elif defined(BAR_PRODUCT)
     mSerialPortClient.send("M:" + message + ",");
 #else

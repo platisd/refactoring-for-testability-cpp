@@ -14,7 +14,6 @@ struct CommunicationManager
 
 private:
     SerialPortClient& mSerialPortClient;
-    [[maybe_unused]] int mSequenceNumber{0};
 };
 } // namespace before
 
