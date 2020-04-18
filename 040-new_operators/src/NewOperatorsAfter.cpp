@@ -9,7 +9,7 @@ int main()
 {
     I2cSensorScanner sensorScanner;
     MySensorFactory sensorFactory;
-    after::SensorManager sensorManager{sensorScanner, sensorFactory};
+    SensorManager sensorManager{sensorScanner, sensorFactory};
     const auto measurements = sensorManager.getSurroundingDistances();
     for (const auto& m : measurements)
     {
