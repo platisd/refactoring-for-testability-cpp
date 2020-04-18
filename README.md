@@ -15,6 +15,7 @@ Hard-to-test patterns in C++ and how to refactor them.
   * [Time](#time)
   * [Law of Demeter](#law-of-demeter)
   * [Domain logic dependent on application logic](#domain-logic-dependent-on-application-logic)
+  * [Singletons](#singletons)
 * [License](#license)
 
 ## What
@@ -801,6 +802,159 @@ void CommunicationManager::sendViaSerial(std::string message)
 | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | [CommunicationManager.hpp](070-domain_dependent_on_application/include/CommunicationManager.hpp) | [CommunicationManager_test.cpp](test/ut/CommunicationManager_test.cpp) |
 | [CommunicationManager.cpp](070-domain_dependent_on_application/src/CommunicationManager.cpp)     |                                                                        |
+
+### Singletons
+
+Try to avoid singletons ([I.3](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i3-avoid-singletons)).
+They have negative implications on multiple levels and their issues are well documented.
+Therefore, it comes to little surprise they are also difficult to test. As a singleton *user*,
+giving the test fixture access to the singleton instance is not straight forward or even
+possible without some nasty workarounds. As a singleton *publisher*, and depending on how you
+implemented your singleton, your test cases are likely to be affecting each other. Consequently,
+they may become more complicated just to ensure they are immune to the pattern's quirks.
+
+#### Example(s)
+
+```cpp
+struct CounterSingleton
+{
+    CounterSingleton(const CounterSingleton&) = delete;
+    CounterSingleton(CounterSingleton&&)      = delete;
+    CounterSingleton& operator=(const CounterSingleton&) = delete;
+    CounterSingleton& operator=(CounterSingleton&&) = delete;
+
+    void increment();
+    void decrement();
+    int get() const;
+
+    static CounterSingleton& getInstance();
+
+private:
+    CounterSingleton() = default;
+
+    std::atomic<int> mCounter{0};
+};
+
+CounterSingleton& CounterSingleton::getInstance()
+{
+    static CounterSingleton instance;
+
+    return instance;
+}
+
+void countTo(int number)
+{
+    // Hard to test context
+    auto& counter        = CounterSingleton::getInstance();
+    bool shouldIncrement = counter.get() < number;
+
+    while (counter.get() != number)
+    {
+        if (shouldIncrement)
+        {
+            counter.increment();
+        }
+        else
+        {
+            counter.decrement();
+        }
+    }
+}
+```
+
+#### Alternative(s)
+
+Ideally, you would remove the singletons from your code-base. Instead of having your classes
+acquire the common resource, you should inject the common resource to them. After all, why
+must your class care whether the resource it uses is also used elsewhere?
+
+In reality, removing the singletons is not always feasible. A common reason is that the singleton
+has been created by a third party and it is not easy or possible to drastically change their code.
+To remedy the situation, you need to isolate the hard-to-test part of getting a hold of the
+singleton instance. You can skip testing this. Instead, once you have gotten hold of the instance,
+you should inject it to your business logic which you *can* test. Of course, before injecting it
+you need to have the appropriate abstractions in place. You can do this either by having your
+instance implement an interface or, if that is not practical, have a wrapper class around it that
+implements the said interface.
+
+##### Wrapper class around singleton instance
+
+```cpp
+struct Counter
+{
+    virtual ~Counter()       = default;
+    virtual void increment() = 0;
+    virtual void decrement() = 0;
+    virtual int get() const  = 0;
+};
+
+struct CommonCounter : public Counter
+{
+    CommonCounter(CounterSingleton& counterSingleton);
+
+    void increment() override;
+    void decrement() override;
+    int get() const override;
+
+private:
+    CounterSingleton& mCounterSingleton;
+};
+
+struct CounterManager
+{
+    CounterManager(Counter& counter);
+
+    void countTo(int number);
+
+private:
+    Counter& mCounter;
+};
+
+void CounterManager::countTo(int number)
+{
+    // Easy to test context
+    bool shouldIncrement = mCounter.get() < number;
+
+    while (mCounter.get() != number)
+    {
+        if (shouldIncrement)
+        {
+            mCounter.increment();
+        }
+        else
+        {
+            mCounter.decrement();
+        }
+    }
+}
+```
+
+##### Singleton instance implements an interface
+
+```cpp
+struct CounterSingleton : public Counter
+{
+    CounterSingleton(const CounterSingleton&) = delete;
+    CounterSingleton(CounterSingleton&&)      = delete;
+    CounterSingleton& operator=(const CounterSingleton&) = delete;
+    CounterSingleton& operator=(CounterSingleton&&) = delete;
+
+    void increment() override;
+    void decrement() override;
+    int get() const override;
+
+    static CounterSingleton& getInstance();
+
+private:
+    CounterSingleton() = default;
+
+    std::atomic<int> mCounter{0};
+};
+```
+| Refactored file(s)                                                  | Unit tests                                                 |
+| ------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [CounterSingleton.hpp](080-singletons/include/CounterSingleton.hpp) | [CounterManager_test.cpp](test/ut/CounterManager_test.cpp) |
+| [CounterSingleton.cpp](080-singletons/src/CounterSingleton.cpp)     |                                                            |
 
 ## License
 

@@ -151,3 +151,11 @@ configure_test(communicationmanager_test)
 # `after` namespaces in the same file and therefore need to make sure
 # everything compiles. This should typically be considered a smell.
 target_compile_definitions(communicationmanager_test PRIVATE BAR_PRODUCT)
+
+# CounterManager test
+add_executable(countermanager_test
+        ${singletons_dir}/src/CounterManager.cpp
+        ${unit_tests}/CounterManager_test.cpp)
+target_include_directories(countermanager_test PUBLIC
+        ${singletons_dir}/include)
+configure_test(countermanager_test)
