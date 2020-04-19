@@ -130,7 +130,7 @@ classes then you should be able to *contain* the refactoring changes.
 
 All the examples are runnable and inspired by real-life situations.
 
-### Files
+### [Files](010-files)
 
 Reading from and writing to files is a relatively common and simple task. However,
 when it is time for unit tests, things get trickier. This is because if we actually
@@ -197,7 +197,7 @@ struct FileWriter
 | [FileEncoder.hpp](010-files/include/FileEncoder.hpp) | [FileEncoder_test.cpp](test/ut/FileEncoder_test.cpp) |
 | [FileEncoder.cpp](010-files/src/FileEncoder.cpp)     |                                                      |
 
-### Hardcoded dependencies
+### [Hardcoded dependencies](020-hardcoded_dependencies)
 
 Hardcoding dependencies results in having to include *unrelated*, to our unit under
 test, code in our test setup. Consequently, we end up testing more than we should
@@ -279,7 +279,7 @@ private:
 | [DirectionalOdometer.hpp](020-hardcoded_dependencies/include/DirectionalOdometer.hpp)     |                                                  |
 | [DirectionlessOdometer.cpp](020-hardcoded_dependencies/src/DirectionalOdometer.cpp)       |                                                  |
 
-### Third-party libraries
+### [Third-party libraries](030-third_party)
 
 Using third-party libraries instead of reinventing the wheel is a must if you do
 not want to spend your time in commodity functionality that does not differentiate
@@ -365,7 +365,7 @@ PlatisSolutionsBenchmarker::getResponseTime() const
 | [PlatisSolutionsBenchmarker.cpp](030-third_party/src/PlatisSolutionsBenchmarker.cpp)     |                                                                                    |
 
 
-### `new` operators
+### [`new` operators](040-new_operators)
 
 Occasionally, it is not possible to inject dependencies because they may not be
 known during compile-time. For example, if you have a machine that can be connected
@@ -511,7 +511,7 @@ SensorManager::SensorManager(SensorScanner& sensorScanner,
 | [SensorManager.cpp](040-new_operators/src/SensorManager.cpp)     |                                                          |
 
 
-### Time
+### [Time](050-time)
 
 Very often we need to perform operations that involve time. For example, we may need
 to execute some actions at a specific interval, wait until another event happens, a
@@ -599,7 +599,7 @@ bool PowerController::turnOn()
 | [PowerController.hpp](050-time/include/PowerController.hpp) | [PowerController_test.cpp](test/ut/PowerController_test.cpp) |
 | [PowerController.cpp](050-time/src/PowerController.cpp)     |                                                              |
 
-### Law of Demeter
+### [Law of Demeter](060-law_of_demeter)
 
 > * Each unit should have only limited knowledge about other units: only units "closely"
 > related to the current unit.
@@ -711,7 +711,7 @@ void StateBroadcaster::emergencyBroadcast()
 | [StateBroadcaster.hpp](060-law_of_demeter/include/StateBroadcaster.hpp)             |                                                                |
 | [StateBroadcaster.cpp](060-law_of_demeter/src/StateBroadcaster.cpp)                 |                                                                |
 
-### Domain logic dependent on application logic
+### [Domain logic dependent on application logic](070-domain_dependent_on_application)
 
 Having the domain/platform logic dependent on the application is one of the most common yet
 serious mistakes one can do. It hurts the maintainability, readability and reusability
@@ -803,7 +803,7 @@ void CommunicationManager::sendViaSerial(std::string message)
 | [CommunicationManager.hpp](070-domain_dependent_on_application/include/CommunicationManager.hpp) | [CommunicationManager_test.cpp](test/ut/CommunicationManager_test.cpp) |
 | [CommunicationManager.cpp](070-domain_dependent_on_application/src/CommunicationManager.cpp)     |                                                                        |
 
-### Singletons
+### [Singletons](080-singletons)
 
 Try to avoid singletons ([I.3](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i3-avoid-singletons)).
 They have negative implications on multiple levels and their issues are well documented.
