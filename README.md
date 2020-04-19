@@ -868,14 +868,17 @@ Ideally, you would remove the singletons from your code-base. Instead of having 
 acquire the common resource, you should inject the common resource to them. After all, why
 must your class care whether the resource it uses is also used elsewhere?
 
-In reality, removing the singletons is not always feasible. A common reason is that the singleton
-has been created by a third party and it is not easy or possible to drastically change their code.
-To remedy the situation, you need to isolate the hard-to-test part of getting a hold of the
-singleton instance. You can skip testing this. Instead, once you have gotten hold of the instance,
-you should inject it to your business logic which you *can* test. Of course, before injecting it
-you need to have the appropriate abstractions in place. You can do this either by having your
-instance implement an interface or, if that is not practical, have a wrapper class around it that
-implements the said interface.
+Anyway, let's assume you thought it through and concluded that removing the singletons is not
+feasible. For example, the overall code structure/framework may not be facilitating the injection
+of resources. Additionally, the singleton has been created by a third party, so it is not easy or
+possible to drastically change their code.
+
+To remedy the situation, you need to **isolate** the hard-to-test part of getting a hold of the
+singleton instance. Then, you can skip unit testing this. Instead, once you have gotten hold of
+the instance, you should inject it to your business logic which you *can* test. Of course, before
+injecting it you need to have the appropriate abstractions in place. You can do this either by
+having your instance implement an interface or, if that is not practical, have a wrapper class
+around it that implements the said interface.
 
 ##### Wrapper class around singleton instance
 
