@@ -183,6 +183,20 @@ struct FileReader
     read(const std::string& filePath) const = 0;
 };
 
+std::optional<std::string> MyFileReader::read(const std::string& filePath) const
+{
+    std::ifstream fileToRead(filePath);
+    std::stringstream buffer;
+    buffer << fileToRead.rdbuf();
+
+    if (buffer.good())
+    {
+        return std::make_optional(buffer.str());
+    }
+
+    return std::nullopt;
+}
+
 struct FileWriter
 {
     virtual ~FileWriter() = default;
@@ -190,6 +204,18 @@ struct FileWriter
     virtual bool write(const std::string& filePath,
                        const std ::string& content) const = 0;
 };
+
+bool MyFileWriter::write(const std::string& filePath,
+                         const std ::string& content) const
+{
+    std::ofstream outfile(filePath.c_str(), std::ios::trunc);
+    if (outfile.good())
+    {
+        outfile << content << std::endl;
+    }
+
+    return outfile.good();
+}
 ```
 
 | Refactored file(s)                                   | Unit tests                                           |
@@ -222,8 +248,21 @@ struct DirectionlessOdometer
     double getDistance() const;
 
 protected:
+    const int mPulsesPerMeter;
+    int mPulses{0};
     MyInterruptServiceManager mInterruptManager;
 };
+
+DirectionlessOdometer::DirectionlessOdometer(int pulsePin, int pulsesPerMeter)
+    : mPulsesPerMeter{pulsesPerMeter}
+{
+    mInterruptManager.triggerOnNewPulse(pulsePin, [this]() { mPulses++; });
+}
+
+double DirectionlessOdometer::getDistance() const
+{
+    return mPulses == 0 ? 0.0 : static_cast<double>(mPulsesPerMeter) / mPulses;
+}
 
 // Extending (and using) a concrete class
 struct DirectionalOdometer : public DirectionlessOdometer
@@ -232,7 +271,26 @@ struct DirectionalOdometer : public DirectionlessOdometer
 
 private:
     MyPinReader mPinReader;
+    const int mDirectionPin;
 };
+
+DirectionalOdometer::DirectionalOdometer(int directionPin,
+                                         int pulsePin,
+                                         int pulsesPerMeter)
+    : DirectionlessOdometer(pulsePin, pulsesPerMeter)
+    , mDirectionPin{directionPin}
+{
+    mInterruptManager.triggerOnNewPulse(pulsePin, [this]() {
+        if (mPinReader.read(mDirectionPin))
+        {
+            mPulses++;
+        }
+        else
+        {
+            mPulses--;
+        }
+    });
+}
 ```
 
 #### Alternative(s)
@@ -244,6 +302,15 @@ a `DirectionlessOdometer`, is it? Then, we *inject* the *abstracted* resources
 that are being used into the classes that use them via the respective constructors.
 
 ```cpp
+struct Encoder
+{
+    virtual ~Encoder() = default;
+
+    virtual void incrementPulses()     = 0;
+    virtual void decrementPulses()     = 0;
+    virtual double getDistance() const = 0;
+};
+
 struct DirectionlessOdometer
 {
     DirectionlessOdometer(Encoder& encoder,
