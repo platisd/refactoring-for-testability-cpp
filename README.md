@@ -113,7 +113,7 @@ includes mocking via GoogleMock is a lightweight testing framework and probably
 the de facto standard for C++.
 
 The solutions proposed, do not claim to be better in performance nor compliant
-with any safety0critical coding guidelines your project may have. They tackle
+with any safety critical coding guidelines your project may have. They tackle
 the lack of testability at a software design level and do not take into
 account special domain constraints. Nonetheless, if performance is brought
 forward as an argument against testable code, before taking any decisions
