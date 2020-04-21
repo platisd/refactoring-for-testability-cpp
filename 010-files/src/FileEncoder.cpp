@@ -5,7 +5,7 @@
 
 namespace before
 {
-bool write(const std::string& filePath, const std ::string& content)
+bool write(const std::string& filePath, const std::string& content)
 {
     std::ofstream outfile(filePath.c_str(), std::ios::trunc);
     if (outfile.good())

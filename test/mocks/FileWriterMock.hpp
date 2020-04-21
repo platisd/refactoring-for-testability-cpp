@@ -9,7 +9,7 @@ class MockFileWriter : public FileWriter
 public:
     MOCK_METHOD(bool,
                 write,
-                (const std::string& filePath, const std ::string& content),
+                (const std::string& filePath, const std::string& content),
                 (const, override));
 };
 

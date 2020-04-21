@@ -6,7 +6,7 @@
 struct MyFileWriter : public FileWriter
 {
     bool write(const std::string& filePath,
-               const std ::string& content) const override;
+               const std::string& content) const override;
 };
 
 #endif // CPP_REFACTORING_FOR_TESTABILITY_MYFILEWRITER_HPP
