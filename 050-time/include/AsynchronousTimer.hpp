@@ -4,9 +4,8 @@
 #include <chrono>
 #include <functional>
 
-class AsynchronousTimer
+struct AsynchronousTimer
 {
-public:
     virtual ~AsynchronousTimer() = default;
 
     virtual void schedule(std::function<void()> task,
