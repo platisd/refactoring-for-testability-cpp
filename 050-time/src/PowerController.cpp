@@ -66,8 +66,6 @@ bool PowerController::turnOn()
     mTimeKeeper.sleepFor(kTimeBetweenPulses);
     mPinManager.clearPin(kPin);
 
-    std::unique_lock<std::mutex> lk(mRunnerMutex);
-    std::cout << "Waiting for response" << std::endl;
     mAsynchronousTimer.schedule(
         [this]() {
             mPulseTimedOut = true;
@@ -75,6 +73,8 @@ bool PowerController::turnOn()
         },
         kTimeToWaitForPulse);
 
+    std::unique_lock<std::mutex> lk(mRunnerMutex);
+    std::cout << "Waiting for response" << std::endl;
     mConditionVariable.wait(lk, [this]() {
         return mPulseReceived.load() || mPulseTimedOut.load();
     });
