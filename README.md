@@ -141,7 +141,7 @@ environment and its file structure.
 #### Example(s)
 
 ```cpp
-bool write(const std::string& filePath, const std ::string& content)
+bool write(const std::string& filePath, const std::string& content)
 {
     std::ofstream outfile(filePath.c_str(), std::ios::trunc);
     if (outfile.good())
@@ -166,6 +166,26 @@ std::optional<std::string> read(const std::string& filePath)
     return std::nullopt;
 }
 
+bool FileEncoder::encode(const std::string& filePath) const
+{
+    const auto validFileContents = read(filePath);
+    if (!validFileContents)
+    {
+        return false;
+    }
+    auto encodedFileContents = validFileContents.value();
+    for (auto& c : encodedFileContents)
+    {
+        if (std::isalnum(c))
+        {
+            c++;
+        }
+    }
+    const auto wroteFileSuccessfully
+        = write(filePath + ".encoded", encodedFileContents);
+
+    return wroteFileSuccessfully;
+}
 ```
 
 #### Alternative(s)
@@ -202,11 +222,11 @@ struct FileWriter
     virtual ~FileWriter() = default;
 
     virtual bool write(const std::string& filePath,
-                       const std ::string& content) const = 0;
+                       const std::string& content) const = 0;
 };
 
 bool MyFileWriter::write(const std::string& filePath,
-                         const std ::string& content) const
+                         const std::string& content) const
 {
     std::ofstream outfile(filePath.c_str(), std::ios::trunc);
     if (outfile.good())
@@ -216,6 +236,17 @@ bool MyFileWriter::write(const std::string& filePath,
 
     return outfile.good();
 }
+
+struct FileEncoder
+{
+    FileEncoder(FileReader& fileReader, FileWriter& fileWriter);
+
+    bool encode(const std::string& filePath) const;
+
+private:
+    FileReader& mFileReader;
+    FileWriter& mFileWriter;
+};
 ```
 
 | Refactored file(s)                                   | Unit tests                                           |
@@ -599,7 +630,7 @@ bool PowerController::turnOn()
     mPinManager.clearPin(kPin);
 
     std::unique_lock<std::mutex> lk(mRunnerMutex);
-    std::cout << "Waiting for response" << std::endl;
+
     mConditionVariable.wait_for(
         lk, 10s, [this]() { return mPulseReceived.load(); });
 
@@ -618,9 +649,11 @@ One that simply "keeps time" or merely blocks the current thread and another to 
 events, such as the timeout expiry.
 
 ```cpp
-struct MyTimeKeeper : public TimeKeeper
+struct TimeKeeper
 {
-    void sleepFor(std::chrono::milliseconds delay) const override;
+    virtual ~TimeKeeper() = default;
+
+    virtual void sleepFor(std::chrono::milliseconds delay) const = 0;
 };
 
 class AsynchronousTimer
@@ -631,24 +664,23 @@ public:
     virtual void schedule(std::function<void()> task,
                           std::chrono::seconds delay)
         = 0;
-    virtual bool hasPendingTask() const = 0;
-    virtual void abort()                = 0;
+    virtual void abort() = 0;
 };
 
 bool PowerController::turnOn()
 {
     mPinManager.setPin(kPin);
-    mTimeKeeper.sleepFor(kTimeBetweenPulses);
+    mTimeKeeper.sleepFor(1s);
     mPinManager.clearPin(kPin);
 
-    std::unique_lock<std::mutex> lk(mRunnerMutex);
-    std::cout << "Waiting for response" << std::endl;
     mAsynchronousTimer.schedule(
         [this]() {
             mPulseTimedOut = true;
             mConditionVariable.notify_one();
         },
-        kTimeToWaitForPulse);
+        10s);
+
+    std::unique_lock<std::mutex> lk(mRunnerMutex);
 
     mConditionVariable.wait(lk, [this]() {
         return mPulseReceived.load() || mPulseTimedOut.load();
