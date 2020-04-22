@@ -34,7 +34,7 @@ because they:
 * Delay the test execution
   * E.g.: sleeps inside code under test
 * Require intricate structures to be copied or written from scratch
-  * E.g.: Stubs containing (a lot of) logic
+  * E.g.: Fakes containing a lot of logic
 * Require test details to be included in the production code
   * E.g.: `#ifdef UNIT_TESTS`
 * Make changes and/or are dependent on the runtime environment
