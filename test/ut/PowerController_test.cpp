@@ -105,7 +105,7 @@ TEST_F(PowerControllerTest, turnOn_WhenTimeoutScheduled_WillBeAbortedSoToReuse)
 // timeout is trickier, since it has to involve threads. Threads are
 // non-deterministic therefore we should find a good trade-off between the
 // repeatability of our test fixture and the time it takes to execute.
-// Depending on your business logic you may choose to
+// Depending on your business logic you may choose to omit this test.
 TEST_F(PowerControllerTest,
        turnOn_WhenWaitingForPulse_WillBlockUntilPulseIsReceived)
 {
@@ -114,7 +114,7 @@ TEST_F(PowerControllerTest,
         std::launch::async, [this]() { return mPowerController->turnOn(); });
     // Give it some *reasonable* time to reach the point where it should block.
     // This is of course not guaranteed and therefore you need to choose between
-    // how much non-deterministic behavior your would like and the execution
+    // how much non-deterministic behavior you would like and the execution
     // time of your tests. For example, if you would want to ensure that this
     // will *always* wait until the thread is blocked, then you can use a
     // large(r) duration as an argument to `wait_for`.

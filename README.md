@@ -44,7 +44,7 @@ because they:
 
 If the code is testable, writing unit tests can be particularly fun.
 It can be seen as a satisfying way to *prove* your effort is correct _in
-principle_. Of course, writing unit tests doe not necessarily imply
+principle_. Of course, writing unit tests does not necessarily imply
 your software works as a whole, especially in conjunction with other
 parts of the system. To ensure this you should look into other types of
 testing, where larger pieces of functionality get verified. The most
