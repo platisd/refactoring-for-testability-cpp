@@ -329,8 +329,9 @@ DirectionalOdometer::DirectionalOdometer(int directionPin,
 We separate the *common* functionality in a new class and stop extending
 the concrete class. This has the added semantic benefit of avoiding to impose
 a parent-child relationship. After all, a `DirectionalOdometer` is *not* really
-a `DirectionlessOdometer`, is it? Then, we *inject* the *abstracted* resources
-that are being used into the classes that use them via the respective constructors.
+a `DirectionlessOdometer`, is it?<br>
+Then, we *inject* the *abstracted* resources that are being used into the classes
+that use them via the respective constructors.
 
 ```cpp
 struct Encoder
@@ -422,7 +423,7 @@ PlatisSolutionsBenchmarker::getResponseTime() const
 
 #### Alternative(s)
 
-Instead of using [libcurl](https://curl.haxx.se/libcurl/)) directly in our code, we
+Instead of using [libcurl](https://curl.haxx.se/libcurl/) directly in our code, we
 create a wrapper class around it. This wrapper class, **abstracts the business value**
 we are after when using this 3rd party software. As a result, we do not have to be
 *actually* using `curl` to download things during our unit tests. Furtheremore, we are
